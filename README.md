@@ -37,8 +37,9 @@
    pekerjaannya kembali ke cabang utama (main branch) setelah selesai. Ini menghindari konflik kode dan memudahkan kolaborasi tanpa gangguan satu sama lain.
 
    - Branching dan Merging:
-   >Branching memungkinkan pengembang membuat salinan independen dari kode untuk mengembangkan fitur baru atau memperbaiki bug tanpa memengaruhi kode utama. Setelah fitur selesai, cabang     tersebut bisa digabungkan (merging) kembali ke cabang utama.
-   >Branching juga mempermudah pengelolaan siklus pengembangan seperti pengembangan fitur, perbaikan bug, dan rilis versi produk.
+   
+      1.Branching memungkinkan pengembang membuat salinan independen dari kode untuk mengembangkan fitur baru atau memperbaiki bug tanpa memengaruhi kode utama. Setelah fitur selesai             cabang tersebut bisa digabungkan (merging) kembali ke cabang utama.
+      2.Branching juga mempermudah pengelolaan siklus pengembangan seperti pengembangan fitur, perbaikan bug, dan rilis versi produk.
 
    - Membantu dalam Pengelolaan Proyek Besar:
    Git sangat berguna dalam proyek besar yang melibatkan banyak pengembang atau banyak fitur yang sedang dikembangkan secara bersamaan. Dengan menggunakan Git, proyek bisa dibagi ke   
@@ -61,7 +62,9 @@
    transparansi pada seluruh proses pengembangan.
 
 4. Menurut Anda, dari semua framework yang ada, mengapa framework Django dijadikan permulaan pembelajaran pengembangan perangkat lunak?
+
    Menurut saya, karena Django adalah salah satu framework yang mudah dipelajari untuk pemula. Django juga menggunakan bahasa python yang merupakan bahasa pemrograman populer dan ramah      untuk pemula. Django memiliki dokumentasi terbaik dibandingkan framework lainnya, bagi pemula yang baru pertama kali belajar framework web, dokumentasi yang bagus bisa menjadi panduan    utama untuk menyelesaikan masalah tanpa kebingungan. Secara keseluruhan, Django adalah pilihan yang ideal bagi pemula karena kesederhanaan, keteraturan, dan dokumentasi yang kuat,        serta fitur-fitur yang langsung siap digunakan.
 
-5. Mengapa model pada Django disebut sebagai ORM?
+6. Mengapa model pada Django disebut sebagai ORM?
+
    Model pada Django disebut sebagai ORM (Object-Relational Mapping) karena model dalam Django berfungsi sebagai jembatan antara objek-objek dalam kode Python dan tabel-tabel dalam basis    data relasional.
