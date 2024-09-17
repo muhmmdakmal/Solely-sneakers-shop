@@ -68,3 +68,82 @@
 6. Mengapa model pada Django disebut sebagai ORM?
 
    Model pada Django disebut sebagai ORM (Object-Relational Mapping) karena model dalam Django berfungsi sebagai jembatan antara objek-objek dalam kode Python dan tabel-tabel dalam basis    data relasional.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1. Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
+   
+   Data delivery diperlukan dalam pengimplementasian sebuah platform karena itu adalah proses untuk mentransfer informasi dari satu bagian sistem ke bagian lain. Misalnya, dari server ke 
+   client atau antar sistem yang berbeda. Ini sangat penting karena:
+   - Kecepatan Akses Data: Pengguna membutuhkan data secara real-time atau secepat mungkin. Tanpa mekanisme data delivery yang baik, akses data bisa lambat, yang akan mempengaruhi 
+     performa platform secara keseluruhan.
+   - Konsistensi Data: Data harus tetap konsisten dan akurat ketika ditransfer antar bagian sistem. Data delivery yang baik memastikan tidak ada kehilangan data atau perubahan yang tidak 
+     diinginkan selama pengiriman.
+   - Komunikasi Antar Komponen: Platform sering kali terdiri dari berbagai komponen yang bekerja bersama. Data delivery memungkinkan setiap komponen untuk bertukar informasi dan 
+     berfungsi sesuai dengan tujuannya.
+   - Efisiensi Operasional: Proses pengiriman data yang efektif dan efisien memastikan bahwa platform dapat beroperasi dengan lancar tanpa terjadi bottleneck atau keterlambatan dalam 
+     proses.
+
+2. Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML?
+
+   Menurut saya yang lebih baik antara XML dan JSON adalah JSON. Alasan megapa JSON lebih populer dibandingkan XML yaitu :
+   - Kebersihan dan Kesederhanaan Sintaks : JSON memiliki sintaks yang lebih sederhana dan lebih mudah dibaca oleh manusia. Formatnya menggunakan pasangan key-value yang mirip dengan 
+     objek pada bahasa pemrograman seperti JavaScript. XML, di sisi lain, menggunakan tag pembuka dan penutup yang membuat dokumen bisa jadi panjang dan kompleks, terutama ketika data 
+     yang dikirimkan cukup banyak.
+   - Ukuran File Lebih Ringan : JSON cenderung lebih ringan dibandingkan XML karena tidak memerlukan tag yang berpasangan seperti pada XML. Ini membuat JSON lebih efisien dalam hal 
+     ukuran dan waktu pengiriman data.
+   - Kecepatan Parsing : JSON lebih cepat diproses oleh banyak sistem dibandingkan XML. Hal ini karena JSON bisa langsung diparsing menjadi objek JavaScript, sementara XML biasanya 
+     memerlukan langkah parsing yang lebih rumit.
+
+3. Jelaskan fungsi dari method is_valid() pada form Django dan mengapa kita membutuhkan method tersebut?
+
+   Method is_valid() pada form Django digunakan untuk memeriksa apakah data yang dimasukkan ke dalam form sesuai dengan aturan validasi yang ditetapkan. Jika data valid, method ini 
+   mengisi atribut cleaned_data yang berisi data bersih siap pakai. Jika tidak valid, method ini mengembalikan False dan menyimpan pesan error di atribut errors.
+   Kita membutuhkan is_valid() untuk:
+   - Memastikan hanya data yang valid yang diproses.
+   - Meningkatkan keamanan aplikasi dengan mencegah input berbahaya.
+   - Memberikan umpan balik yang jelas ke pengguna untuk memperbaiki kesalahan input mereka.
+
+4.  Mengapa kita membutuhkan csrf_token saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan csrf_token pada form Django? Bagaimana hal tersebut dapat 
+    dimanfaatkan oleh penyerang?
+
+    - Mengapa csrf_token dibutuhkan?
+      csrf_token adalah token keamanan unik yang dibuat oleh server dan disertakan di dalam form. Token ini divalidasi setiap kali form dikirim untuk memastikan bahwa permintaan berasal 
+      dari sumber yang sah (yaitu pengguna yang sah dan bukan dari pihak luar).
+    - Apa yang dapat terjadi jika tidak menambahkan csrf_token?
+      Jika form Django tidak menyertakan csrf_token, aplikasi menjadi rentan terhadap serangan CSRF. Penyerang bisa memanfaatkan celah ini dengan mengirimkan permintaan berbahaya yang 
+      tampak seperti berasal dari pengguna sah. Misalnya, penyerang bisa membuat pengguna tanpa sadar mengirimkan formulir yang berisi perintah untuk mengubah data penting atau 
+      melakukan transaksi tanpa persetujuan mereka.
+    - Bagaimana penyerang bisa memanfaatkannya?
+      Penyerang dapat:
+      1. Mengirimkan link berbahaya atau menyisipkan form tersembunyi di situs lain.
+      2. Saat pengguna mengklik link atau mengunjungi situs tersebut, permintaan palsu dikirimkan ke aplikasi target dengan menggunakan sesi login pengguna.
+      3. Aplikasi tanpa csrf_token tidak bisa membedakan apakah permintaan tersebut sah atau tidak, sehingga permintaan berbahaya bisa dieksekusi dengan sukses, misalnya mentransfer 
+         uang atau mengubah kata sandi pengguna.
+
+5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
+   1. Buat directory dengan nama "templates" diroot lalu buatlah file base.html didalam folder tersebut.
+   2. Isi file base.html.
+   3. Buka settings.py lalu tambahkan 'templates' di dalam dictionary TEMPLATES di key 'DIRS'.
+   4. Tambahkan import uuid di file models.py di dalam directory main. Lalu melakukan migration.
+   5. Buat file forms.py yang berguna untuk mengambil data dari models.py.
+   6. Tambahkan beberapa import didalam file views.py yang berguna untuk mengambil data dari models.py dan forms.py.
+   7. Buat function didalam views.py untuk menghasilkan formnya.
+   8. Tambahkan variable didalam function show_main() untuk mengambil semua object didalam models.py. Tambahkan juga didalam dictionary context yang berisi variable itu.
+   9. Tambahkan import di file urls.py untuk menghubungkan ke html baru yang nanti akan berguna untuk user mengisi form. Tambahkan juga di list 'urlpatterns'.
+   10. Buatlah file html yang sesuai dengan nama yang anda isi didalam file urls.py.
+   11. Isi file html form tersebut sesuai dengan keinginan anda. Jangan lupa untuk menambahkan {% csrf_token %} didalam file html anda untuk melindungi data user.
+   12. Lalu di file main.html tambahkan code untuk mengarahkan user ke page form yang juga berupa html yang sudah kita buat.
+   13. Untuk mengakses data user lebih mudah, kita akan menambahkan beberapa import dan function di dalam views.py.
+   14. Tambahkan import from django.http import HttpResponse dan from django.core import serializers didalam file views.py
+   15. Buatlah function baru show_xml(), show_json(), show_xml_by_id(), dan show_json_by_id() yang menerima parameter request untuk show xml dan show json dan menerima parameter request 
+       dan id untuk show xml by id dan show json by id.
+   16. Lalu kita tambahkan import berupa nama-nama function tersebut didalam file urls.py dan tambahkan path didalam list urlpatterns.
+
+Screenshot bukti postman :
+![XML](https://github.com/user-attachments/assets/bf66f515-2e16-48e5-aa57-f66b81a7feaf)
+![json](https://github.com/user-attachments/assets/7b359c10-919d-4e97-a445-90283b4165f4)
+![XML_id](https://github.com/user-attachments/assets/776310e8-61cb-45e3-b9fc-b374a8d333ca)
+![json_id](https://github.com/user-attachments/assets/50c04815-a5ee-43ea-8729-e0d761901f2c)
+
+
