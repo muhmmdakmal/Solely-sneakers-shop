@@ -7,7 +7,7 @@
 <h2>{{ npm_creator }}</h2>
 <h2>{{ class_creator }}</h2>
 
-<h3>{{ name }} </h3>
+<h3>{{ name_product }} </h3>
 <img src="C:/Users/Lenovo/OneDrive/Desktop/Kuliah/PBP/Solely-sneakers-shop/main/static/ConverseOW.jpg" alt="Converse Chuck Taylor All Star Vulcanized Hi X Off-White" width="250" height="250">
 <h3>Price : </h3>
 <p>{{ price }}</p> 
@@ -43,4 +43,11 @@
 <a href="{% url 'main:create_rating' %}">
   <button>Add Rating</button>
 </a>
+
+<a href="{% url 'main:logout' %}">
+  <button>Logout</button>
+</a>
+
+<h5>Sesi terakhir login: {{ last_login }}</h5>
+
 {% endblock content %}
