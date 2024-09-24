@@ -1,3 +1,15 @@
+<h1>Solely Sneakers Shop</h1>
+<h2>
+   
+   Nama  : Muhammad Akmal Abdul Halim
+   
+   NPM   : 2306245125
+  
+   Kelas : PBP-D
+</h2>
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 <details>
    <summary> Tugas 2: Implementasi Model-View-Template (MVT) pada Django </summary>
    
@@ -155,4 +167,193 @@
 ![XML_id](https://github.com/user-attachments/assets/776310e8-61cb-45e3-b9fc-b374a8d333ca)
 ![json_id](https://github.com/user-attachments/assets/50c04815-a5ee-43ea-8729-e0d761901f2c)
 
+</details>
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+<details>
+   <summary> Tugas 4: Implementasi Autentikasi, Session, dan Cookies pada Django </summary>
+
+   **1. Apa perbedaan antara HttpResponseRedirect() dan redirect()**
+
+   1. HttpResponseRedirect():
+   - HttpResponseRedirect() adalah kelas bawaan Django yang digunakan untuk mengembalikan respons HTTP yang menginstruksikan browser pengguna untuk mengunjungi URL yang berbeda.
+   - Digunakan secara langsung dengan mengoperkan URL tujuan sebagai argumen.
+   
+   2. redirect():
+   - redirect() adalah shortcut atau fungsi utilitas di Django yang menyediakan cara lebih mudah dan fleksibel untuk melakukan pengalihan.
+   - Selain menerima URL, fungsi ini juga dapat menerima nama dari suatu view (dengan menggunakan nama URL patterns dari urls.py), serta argumen tambahan untuk di-parse dalam URL.
+
+   Perbedaan Utama :
+   - Fleksibilitas: redirect() lebih fleksibel karena dapat menggunakan nama URL dari urls.py dan juga bisa menangani objek, sementara HttpResponseRedirect() hanya bekerja dengan URL string secara eksplisit.
+   - Kenyamanan: redirect() merupakan shortcut yang sering digunakan karena memungkinkan pengembang untuk tidak menulis URL secara langsung, melainkan menggunakan logika nama view atau object, membuat kode lebih bersih dan mudah di-maintain.
+
+   **2. Jelaskan cara kerja penghubungan model Product dengan User!**
+
+   Menghubungkan model Product dengan model User dalam Django biasanya dilakukan dengan membuat relasi antara keduanya. Salah satu cara umum adalah dengan menggunakan ForeignKey, yang merepresentasikan hubungan many-to-one di mana banyak produk bisa dimiliki oleh satu pengguna (user).
+   
+   Berikut penjelasan langkah-langkah untuk menghubungkan model Product dengan User:
+   1. Membuat Model Product dengan ForeignKey ke User:
+      
+      Django menyediakan model User bawaan dalam django.contrib.auth.models. Untuk menghubungkannya dengan model Product, kita bisa menggunakan ForeignKey untuk menyatakan bahwa setiap produk terkait dengan satu pengguna.
+
+      Contoh kode:
+      
+      ```python
+      from django.db import models
+      from django.contrib.auth.models import User
+      
+      class Product(models.Model):
+          name = models.CharField(max_length=255)
+          description = models.TextField()
+          price = models.DecimalField(max_digits=10, decimal_places=2)
+          created_at = models.DateTimeField(auto_now_add=True)
+          updated_at = models.DateTimeField(auto_now=True)
+          owner = models.ForeignKey(User, on_delete=models.CASCADE)  # Relasi ke model User
+      
+          def __str__(self):
+              return self.name
+      ```
+
+      Penjelasan:
+      - name: Nama produk yang disimpan sebagai CharField.
+      - description: Deskripsi produk yang disimpan sebagai TextField.
+      - price: Harga produk, disimpan sebagai DecimalField untuk menyimpan angka desimal dengan presisi.
+      - owner: Field ini menggunakan ForeignKey untuk membuat relasi dengan model User.
+      - on_delete=models.CASCADE: Opsi ini menentukan bahwa jika pengguna dihapus, semua produk yang dimiliki oleh pengguna tersebut juga akan dihapus. Jika Kita ingin perilaku berbeda, Kita bisa memilih opsi lain seperti SET_NULL atau PROTECT.
+      - str(): Metode ini mengembalikan representasi string dari objek, dalam hal ini nama produk.
+     
+   2. Relasi di Database:
+
+      Ketika ForeignKey digunakan, Django akan membuat kolom tambahan di tabel Product yang menyimpan ID pengguna (user_id) dari model User. Jadi, untuk setiap produk, ada nilai owner_id yang menunjukkan pengguna yang memiliki produk tersebut.
+
+   3. Penggunaan dalam Views:
+
+      Untuk menghubungkan produk dengan pengguna tertentu dalam view, Kita bisa mengakses atau menetapkan pengguna seperti ini:
+
+      ```python
+      from django.shortcuts import render, redirect
+      from .models import Product
+      from django.contrib.auth.decorators import login_required
+      
+      @login_required
+      def create_product(request):
+          if request.method == 'POST':
+              product_name = request.POST.get('name')
+              description = request.POST.get('description')
+              price = request.POST.get('price')
+      
+              # Membuat produk baru dan menetapkan owner sebagai user yang sedang login
+              product = Product.objects.create(
+                  name=product_name,
+                  description=description,
+                  price=price,
+                  owner=request.user  # Menetapkan pengguna yang login sebagai owner
+              )
+      
+              return redirect('product_list')
+      
+          return render(request, 'create_product.html')
+
+      ```
+
+      Penjelasan:
+      - request.user: Saat pengguna sudah login, Kita bisa mengakses objek User yang sedang login melalui request.user dan menetapkannya sebagai pemilik produk.
+      - @login_required: Decorator ini memastikan bahwa hanya pengguna yang login yang bisa mengakses view ini.
+     
+   4. Querying Product Berdasarkan User:
+
+      Kita bisa mengambil produk-produk milik pengguna tertentu dengan menggunakan filter pada field owner:
+
+      ```python
+      # Mendapatkan semua produk milik pengguna yang sedang login
+      products = Product.objects.filter(owner=request.user)
+      ```
+
+   5. Membuat Relasi Lebih Kompleks:
+
+      Jika dibutuhkan, Kita bisa membuat relasi lebih kompleks antara Product dan User, misalnya:
+      - Many-to-many: Jika satu produk bisa dimiliki oleh beberapa pengguna.
+      - One-to-one: Jika Anda ingin memastikan bahwa hanya ada satu produk yang terkait dengan satu pengguna.
+
+      Contoh untuk Many-to-many:
+
+      ```python
+      buyers = models.ManyToManyField(User, related_name='bought_products')
+      ```
+
+   - Kesimpulan:
+      - ForeignKey adalah cara paling umum untuk menghubungkan model Product dengan User dalam relasi many-to-one.
+      - Field owner pada model Product menyimpan referensi ke pengguna (user) yang memiliki produk tersebut.
+      - Kita dapat menggunakan metode seperti filter() untuk meng-query produk-produk yang dimiliki oleh pengguna tertentu, serta menghubungkan produk baru dengan pengguna melalui request.user
+
+   **3. Apa perbedaan antara authentication dan authorization, apakah yang dilakukan saat pengguna login? Jelaskan bagaimana Django mengimplementasikan kedua konsep tersebut.**
+
+   Authentication adalah proses memverifikasi identitas pengguna (misalnya, saat login dengan username dan password). Authorization adalah proses menentukan apa yang boleh dilakukan oleh pengguna setelah login (misalnya, mengakses halaman tertentu atau mengedit data).
+
+   Perbedaan:
+   - Authentication: Memastikan siapa pengguna (verifikasi identitas).
+   - Authorization: Menentukan apa yang boleh dilakukan oleh pengguna (izin akses).
+
+   Saat pengguna login:
+   - Django **mengauntentikasi** pengguna dengan memeriksa username dan password.
+   - Setelah berhasil login, Django **mengotorisasi** pengguna untuk mengakses fitur atau halaman berdasarkan izin (permissions) mereka.
+
+   Implementasi di Django:
+   
+   Authentication:
+   - Login: Django menyediakan fungsi authenticate() untuk memverifikasi identitas pengguna.
+   - Contoh penggunaan:
+     ```python
+     from django.contrib.auth import authenticate, login
+
+     def login_view(request):
+       username = request.POST['username']
+       password = request.POST['password']
+       user = authenticate(request, username=username, password=password)
+       if user is not None:
+           login(request, user)
+           # Redirect to a success page
+       else:
+           # Return an 'invalid login' error message
+     ```
+
+   - Middleware: Django menggunakan middleware AuthenticationMiddleware untuk mengaitkan setiap permintaan dengan pengguna yang terautentikasi (request.user).
+
+   Authorization:
+   - Django menggunakan permissions dan groups untuk melakukan kontrol akses.
+   - @login_required decorator digunakan untuk membatasi akses hanya kepada pengguna yang sudah login.
+   - Permissions: Setiap model di Django memiliki add, change, dan delete permissions secara default. Anda juga bisa membuat permission kustom.
+   - Contoh:
+     ```python
+     from django.contrib.auth.decorators import login_required, permission_required
+
+     @login_required
+     @permission_required('app_name.change_product')
+     def edit_product(request, product_id):
+        # Logika untuk mengedit produk
+     ```
+
+   **4. Bagaimana Django mengingat pengguna yang telah login? Jelaskan kegunaan lain dari cookies dan apakah semua cookies aman digunakan?**
+
+   Django mengingat pengguna yang telah login menggunakan cookies dan sessions.
+
+   **Cara Django Mengingat Pengguna yang Telah Login:**
+   1. Session: Django menyimpan informasi pengguna yang telah login dalam session. Saat pengguna berhasil login, Django membuat session key yang unik dan menyimpannya di database atau dalam cache.
+   2. Cookie: Django kemudian menyimpan session key ini di browser pengguna sebagai cookie (biasanya bernama sessionid). Setiap kali pengguna membuat permintaan baru ke server, cookie ini dikirim bersama dengan permintaan tersebut.
+   3. Session Key Validasi: Django menggunakan session key untuk mencocokkan data session yang ada di server dan mengetahui siapa pengguna yang sedang login. Dengan cara ini, pengguna tetap "terlogin" selama session masih aktif.
+
+   **Kegunaan Lain dari Cookies:**
+   1. Menyimpan Preferensi: Cookies dapat digunakan untuk menyimpan preferensi pengguna, seperti pengaturan bahasa atau tampilan tema situs.
+   2. Pelacakan Aktivitas: Cookies bisa digunakan untuk melacak aktivitas pengguna di berbagai halaman, seperti produk yang dilihat atau keranjang belanja di e-commerce.
+   3. Autentikasi Otomatis: Cookies dapat menyimpan informasi yang memungkinkan pengguna untuk tetap login tanpa memasukkan kredensial setiap kali membuka situs (misalnya, fungsi "remember me").
+
+   **Apakah Semua Cookies Aman digunakan?**
+
+   Tidak semua cookies aman. Ada beberapa risiko terkait keamanan cookies:
+   1. Cookies yang Tidak Terenkripsi (HTTP): Cookies yang dikirim melalui koneksi HTTP tidak terenkripsi, sehingga dapat diintip oleh pihak ketiga yang berbahaya.
+   2. Cookies yang Terpapar pada JavaScript (XSS): Jika cookie tidak dilindungi dengan benar, mereka bisa diakses melalui JavaScript, membuatnya rentan terhadap serangan Cross-Site Scripting (XSS).
+   3. Serangan Cross-Site Request Forgery (CSRF): Cookies bisa digunakan untuk menyerang pengguna yang tidak curiga, dengan memanfaatkan request yang dikirim tanpa sepengetahuan pengguna.
+
+   **5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).**
 </details>
