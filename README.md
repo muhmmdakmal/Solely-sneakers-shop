@@ -356,4 +356,104 @@
    3. Serangan Cross-Site Request Forgery (CSRF): Cookies bisa digunakan untuk menyerang pengguna yang tidak curiga, dengan memanfaatkan request yang dikirim tanpa sepengetahuan pengguna.
 
    **5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).**
+
+   1. Menambahkan import UserCreationForm dan messages pada views.py
+   2. Menambahkan fungsi register didalam views.py seperti berikut :
+      ```python
+      def register(request):
+          form = UserCreationForm()
+      
+          if request.method == "POST":
+              form = UserCreationForm(request.POST)
+              if form.is_valid():
+                  form.save()
+                  messages.success(request, 'Your account has been successfully created!')
+                  return redirect('main:login')
+          context = {'form':form}
+          return render(request, 'register.html', context)
+      ```
+
+   3. Membuat register.html didalam directory main/templates untuk menampilkan halaman register.
+   4. Melakukan routing di urls.py dengan mengimport register dan menambahkan path dilist urlpatterns agar terhubung.
+   5. Untuk implementasi login kita akan mengimport authenticate, login, dan AuthenticationForm pada bagian paling atas di file views.py.
+   6. Tambahkan fungsi login_user yang menerima parameter request didalam views.py seperti berikut:
+      ```python
+      def login_user(request):
+         if request.method == 'POST':
+            form = AuthenticationForm(data=request.POST)
+      
+            if form.is_valid():
+                  user = form.get_user()
+                  login(request, user)
+                  return redirect('main:show_main')
+      
+         else:
+            form = AuthenticationForm(request)
+         context = {'form': form}
+         return render(request, 'login.html', context)
+      ```
+
+   7. Membuat login.html didalam directory main/templates untuk menampilkan halaman login.
+   8. Melakukan routing di urls.py dengan mengimport login_user dan menambahkan path dilist urlpatterns agar terhubung.
+   9. Untuk implementasi logout kita akan mengimport logout pada bagian paling atas di file views.py.
+   10. Tambahkan fungsi logout yang menerima parameter request didalam views.py seperti berikut:
+       ```python
+       def logout_user(request):
+          logout(request)
+          return redirect('main:login')
+       ```
+    
+   11. Menambahkan tombol logout didalam file main.html dengan menambahkan kode berikut :
+       ```html
+         <a href="{% url 'main:logout' %}">
+           <button>Logout</button>
+         </a>
+       ```
+
+   12. Melakukan routing di urls.py dengan mengimport logout dan menambahkan path dilist urlpatterns agar terhubung.
+   13. Tambahkan potongan kode @login_required(login_url='/login') di atas fungsi show_main yang berada di views.py agar halaman main hanya dapat diakses oleh pengguna yang sudah login (terautentikasi).
+   14. Untuk menerapkan cookies seperti last_login kita akan menambahkan import HttpResponseRedirect, reverse, dan datetime didalam views.py.
+   15. Kita akan menambahkan cookies yang bernama last_login didalam fungsi login user di blok if form.is_valid(): dengan menggantinya menjadi seperti ini :
+       ```python
+       if form.is_valid():
+          user = form.get_user()
+          login(request, user)
+          response = HttpResponseRedirect(reverse("main:show_main"))
+          response.set_cookie('last_login', str(datetime.datetime.now()))
+          return response
+       ```
+
+   16. Didalam dictionary context pada fungsi show_main, kita menambahkan potongan kode 'last_login': request.COOKIES['last_login'] untuk menambahkan informasi last login pada page main.
+   17. Untuk menghapus cookies last_login, kita akan mengubah fungsi logout menjadi sebagai berikut:
+       ```python
+       def logout_user(request):
+          logout(request)
+          response = HttpResponseRedirect(reverse('main:login'))
+          response.delete_cookie('last_login')
+          return response
+       ```
+
+   18. Tambahkan potongan kode berikut pada main.html untuk menampilkan informasi last login
+       ```html
+       <h5>Sesi terakhir login: {{ last_login }}</h5>
+       ```
+
+   19. Untuk menghubungkan model Product dengan User, kita akan mengimport User pada models.py
+   20. Pada model Product kita akan menambahkan potongan kode berikut:
+       ```python
+       user = models.ForeignKey(User, on_delete=models.CASCADE)
+       ```
+
+   21. Pada views.py kita akan mengubah fungsi yang menghandle untuk pembuatan form.
+   22. Lalu kita akan mengubah isi variable yang berguna untuk mengambil semua objek pada models pada fungsi show_main menjadi seperti berikut:
+       ```python
+       Product.objects.filter(user=request.user)
+       ```
+
+   23. Lalu kita juga akan menambahkan potongan kode didalam dictionary context seperti berikut:
+       ```python
+       'name': request.user.username,
+       ```
+
+   24. Lakukan migrasi
 </details>
