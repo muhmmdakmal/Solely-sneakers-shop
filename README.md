@@ -457,3 +457,194 @@
 
    24. Lakukan migrasi
 </details>
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+<details>
+   <summary> Tugas 5: Desain Web menggunakan HTML, CSS dan Framework CSS </summary>
+
+   **1. Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!**
+
+   1. Inline Style (Prioritas Tertinggi)
+      
+      Jika sebuah elemen HTML memiliki gaya CSS yang ditentukan langsung di atribut style, maka ini akan memiliki prioritas tertinggi. CSS dari style inline akan selalu menimpa aturan dari selektor eksternal, internal, atau CSS lainnya.
+
+   2. ID Selector
+      
+      Selektor yang menggunakan atribut id akan memiliki prioritas yang lebih tinggi daripada kelas, tag, atau elemen lainnya.
+
+   3. Class, Pseudo-Class, Attribute Selector
+      
+      Selektor kelas (.class), pseudo-class (:hover, :active), atau selektor atribut ([type="text"]) memiliki prioritas yang lebih rendah daripada ID, tetapi lebih tinggi daripada elemen.
+
+   4. Type Selector (Tag HTML), Pseudo-Elements
+
+      Selektor elemen HTML seperti div, p, h1, atau pseudo-element seperti ::before dan ::after memiliki prioritas paling rendah.
+
+   5. Universal Selector, Inherited Styles, dan Default Browser Styles (Prioritas Terendah)
+
+      Selektor universal (*), gaya yang diwariskan dari elemen induk, serta gaya bawaan dari browser memiliki prioritas terendah.
+
+   **2. Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design!**
+
+   Berikut adalah beberapa alasan mengapa responsive design penting:
+   - Meningkatkan Pengalaman Pengguna (User Experience) :
+     
+     Responsivitas menjamin tampilan yang sesuai pada semua perangkat, sehingga pengguna tidak perlu memperbesar layar atau menggulir secara horizontal. Navigasi yang mudah dan tata letak yang konsisten meningkatkan kepuasan pengguna.
+   - SEO dan Peringkat di Mesin Pencari :
+
+     Google dan mesin pencari lainnya memberikan peringkat lebih tinggi untuk situs web yang mobile-friendly. Karena Google menggunakan algoritma yang memprioritaskan indeksasi mobile, memiliki situs yang responsif membantu meningkatkan peringkat di mesin pencari dan memperluas jangkauan audiens.
+   - Efisiensi Biaya dan Waktu :
+
+     Dengan responsive design, Anda tidak perlu membuat versi terpisah untuk desktop dan mobile, sehingga lebih hemat waktu dan biaya dalam pengembangan dan pemeliharaan. Desain responsif menghemat sumber daya karena satu kode dapat diterapkan di berbagai perangkat.
+   - Peningkatan Konversi dan Penjualan :
+
+     Ketika pengguna mengalami kemudahan saat berinteraksi dengan situs di berbagai perangkat, mereka lebih cenderung untuk kembali, menjelajahi, dan melakukan transaksi, yang pada akhirnya meningkatkan tingkat konversi dan penjualan.
+   - Adaptasi terhadap Perangkat Masa Depan :
+
+     Dengan menggunakan konsep responsivitas berbasis viewport dan ukuran layar, situs web lebih siap menghadapi perangkat baru dengan berbagai ukuran layar yang mungkin muncul di masa depan.
+
+      **Contoh Aplikasi yang Sudah Menerapkan Responsive Design**
+     - Instagram: Instagram memiliki desain yang responsif baik di aplikasi maupun di versi web-nya. Ketika diakses melalui desktop atau smartphone, tampilan aplikasi menyesuaikan sesuai ukuran layar. Navigasi dan pengalaman pengguna tetap konsisten dan nyaman di semua perangkat.
+    
+      **Contoh Aplikasi yang Belum Menerapkan Responsive Design**
+     - Beberapa Website Institusi Pemerintah: Beberapa situs pemerintah (terutama versi lama atau yang tidak diperbarui secara berkala) masih belum menerapkan desain responsif. Misalnya, situs web yang menampilkan konten statis dalam tata letak yang kaku dan tidak bisa menyesuaikan layar kecil, mengharuskan pengguna memperbesar layar atau menggulir horizontal.
+    
+   **3.Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!**
+
+   1. Margin
+
+      - Pengertian : Margin adalah ruang di luar batas (border) elemen. Ini digunakan untuk membuat jarak antara elemen satu dengan elemen lainnya.
+      - Fungsi: Margin mempengaruhi jarak di luar elemen, sehingga dua elemen tidak saling berhimpitan.
+      - Cara Implementasi: Properti margin dapat diatur dengan nilai spesifik untuk bagian atas, kanan, bawah, dan kiri, atau dapat diatur secara keseluruhan. Contoh untuk mengimplementasikannya sebagai berikut :
+
+      ```css
+      div {
+        margin-top: 10px;
+        margin-right: 15px;
+        margin-bottom: 20px;
+        margin-left: 25px;
+      }
+      ```
+   2. Border
+
+      - Pengertian: Border adalah garis yang mengelilingi elemen. Border berada di antara padding dan margin, dan bisa diatur ketebalan, gaya, dan warnanya.
+      - Fungsi: Border memberikan garis atau bingkai di sekitar elemen, yang bisa digunakan untuk menonjolkan elemen atau membagi konten.
+      - Cara Implementasi: Border dapat diatur dengan properti border yang mencakup ukuran, gaya, dan warna, atau secara spesifik untuk setiap sisi. Contoh untuk mengimplementasikannya sebagai berikut :
+     
+        ```css
+        div {
+        border-top: 2px solid black;
+        border-right: 3px dashed red;
+        border-bottom: 4px dotted blue;
+        border-left: 5px solid green;
+         }
+        ```
+   3. Padding
+
+      - Pengertian: Padding adalah ruang di dalam elemen, antara konten elemen dan batas (border) elemen. Padding memberikan ruang di dalam elemen, sehingga konten tidak menempel pada border.
+      - Fungsi: Padding menambah ruang di dalam elemen untuk memberi jarak antara konten dan border. Ini membantu membuat konten terlihat lebih rapi dan teratur.
+      - Cara Implementasi: Padding dapat diatur untuk seluruh elemen, atau secara terpisah untuk atas, kanan, bawah, dan kiri. Contoh untuk mengimplementasikannya sebagai berikut :
+     
+        ```css
+        div {
+           padding-top: 10px;
+           padding-right: 15px;
+           padding-bottom: 20px;
+           padding-left: 25px;
+         }
+        ```
+        
+   **4. Jelaskan konsep flex box dan grid layout beserta kegunaannya!**
+   - Konsep Flex Box:
+
+     Flexbox adalah model layout satu dimensi yang digunakan untuk mengatur tata letak elemen di sepanjang satu sumbu (horizontal atau vertikal). Flexbox memudahkan pengaturan dan distribusi ruang di antara item dalam container yang fleksibel, baik dalam satu baris atau satu kolom. Flexbox sangat cocok digunakan untuk tata letak yang membutuhkan fleksibilitas, terutama dalam hal penyesuaian ukuran elemen berdasarkan ukuran layar dan ruang yang tersedia.
+
+     Kegunaan Flex box:
+     - Membuat tata letak navigasi horizontal (navbar) dengan mudah.
+     - Menyusun card yang fleksibel dan responsif.
+     - Membuat footer yang tetap di bawah dan mendistribusikan item di dalamnya secara merata.
+     - Cocok untuk layout sederhana yang hanya membutuhkan baris atau kolom.
+
+   - Konsep Grid Layout:
+
+     Grid Layout adalah model tata letak dua dimensi yang memungkinkan Anda untuk membuat layout berdasarkan baris dan kolom. CSS Grid menawarkan fleksibilitas yang lebih besar dibandingkan Flexbox dalam mengatur elemen di sepanjang dua dimensi (baik horizontal maupun vertikal). Grid sangat cocok untuk membuat layout yang kompleks seperti halaman web yang memiliki beberapa elemen dengan tata letak yang berbeda-beda dalam satu grid.
+
+     Kegunaan Grid Layout:
+     - Membuat layout halaman yang kompleks dengan banyak elemen.
+     - Menata dashboard dengan beberapa panel atau widget.
+     - Membuat layout galeri gambar atau album foto yang tersusun rapi.
+     - Cocok untuk desain responsif yang lebih terstruktur dan sistematis, terutama ketika harus mengelola banyak elemen dalam berbagai baris dan kolom.
+
+   **5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!**'
+   
+1. Menghubungkan CSS dengan menambahkan <script src="https://cdn.tailwindcss.com"> didalam file base.html.
+
+2. Untuk menambah fitur edit product, kita membuat function didalam views.py dan melakukan routingnya di urls.py. Berikut contoh functionnya:
+
+      ```python
+         def edit_mood(request, id):
+            # Get mood entry berdasarkan id
+            mood = MoodEntry.objects.get(pk = id)
+         
+            # Set mood entry sebagai instance dari form
+            form = MoodEntryForm(request.POST or None, instance=mood)
+         
+            if form.is_valid() and request.method == "POST":
+              # Simpan form dan kembali ke halaman awal
+              form.save()
+              return HttpResponseRedirect(reverse('main:show_main'))
+         
+            context = {'form': form}
+            return render(request, "edit_mood.html", context)
+      ```
+
+3. Menambahkan import di views.py yaitu from django.shortcuts import .., reverse da from django.http import .., HttpResponseRedirect
+4. Membuat halaman edit product.
+5. Melakukan routing di urls.py untuk edit productnya.
+6. Menambahkan tombol edit product di main.html.
+7. Untuk menambah fitur delete product, kita membuat function didalam views.py dan melakukan routingnya di urls.py. Berikut contoh functionnya:
+
+   ```python
+   def delete_mood(request, id):
+       # Get mood berdasarkan id
+       mood = MoodEntry.objects.get(pk = id)
+       # Hapus mood
+       mood.delete()
+       # Kembali ke halaman awal
+       return HttpResponseRedirect(reverse('main:show_main'))
+   ```
+
+8. Menambahkan tombol delete product di main.html.
+9. Untuk membuat navbar, kita membuat files di root directory didalam templates dengan nama navbar.html.
+10. Isi sesuai dengan keinginan kita.
+11. Agar navbar muncul dipage yang kita inginkan, tambahkan {% include 'navbar.html' %} dimasing-masing file html yang kita inginkan untuk navbar muncul.
+12. Untuk mengelola static files, pada settings.py tambahkan code berikut:
+
+    ```python
+    MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', #Tambahkan tepat di bawah SecurityMiddleware
+    ...
+    ]
+   
+    ```
+
+13. Tambahkan code berikut juga:
+
+   ```python
+      ...
+   STATIC_URL = '/static/'
+   if DEBUG:
+       STATICFILES_DIRS = [
+           BASE_DIR / 'static' # merujuk ke /static root project pada mode development
+       ]
+   else:
+       STATIC_ROOT = BASE_DIR / 'static' # merujuk ke /static root project pada mode production
+   ...
+   ```
+
+14. Membuat file global.css yang berguna untuk mendesign page anda dengan membuat directory bernama static diroot directory dan didalam directory membuat directory bernama css.
+15. Agar CSS dan tailwind dapat terhubung, kita melakukan routing di base.html dengan menambahkan line berikut didalam tag head <script src="https://cdn.tailwindcss.com"></script> dan <link rel="stylesheet" href="{% static 'css/global.css' %}"/>
+16. Lakukan styling dihalaman yang anda ingin style, jika anda ingin menambahkan animasi kompleks anda bisa menambahkan styling sendiri di global.css
+</details>
