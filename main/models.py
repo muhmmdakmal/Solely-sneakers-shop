@@ -7,11 +7,12 @@ class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
-    price = models.IntegerField(default=0)
+    price = models.IntegerField()
     description = models.TextField()
     time = models.DateField(default=datetime.date.today)# Menampilkan waktu
-    rating_barang = models.IntegerField() # Rating untuk barang
-
-
+    rating_barang = models.IntegerField(default=0)
+    image = models.ImageField(upload_to='product_images/', blank=True, null=True)
+    
     def __str__(self):
         return self.name
+    

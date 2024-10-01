@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from main.forms import ProductForm
 from main.models import Product
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseRedirect
 from django.urls import reverse
 from django.core import serializers
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -16,7 +16,6 @@ def show_main(request):
     context = {
         'name': request.user.username,
         'name_product' : 'Converse Chuck Taylor All Star Vulcanized Hi X Off-White',
-        'image_url': 'C:/Users/Lenovo/OneDrive/Desktop/Kuliah/PBP/Solely-sneakers-shop/main/templates/ConverseOW.jpg',
         'price': 'IDR.10,500,000',
         'description': 'Seri ini, yang dirancang oleh Virgil Abloh dari Off-White dan Nike, menggabungkan ketiga brand untuk versi baru yang menarik dari Converse Chuck Taylor klasik. Sepasang sepatu dari seri "Ghosting" ini hadir dalam warna putih, kerucut, dan biru es. Mereka memiliki bahan yang berbeda di seluruh bagian, serta sol tembus pandang biru es, tali pengikat merah, merek hitam, dan bagian atas tembus pandang yang direkonstruksi untuk sesuai dengan temanya. Tersedia bersama dengan koleksi Off-White x Nike "Ghosting" lainnya, akan dirilis pada 1 November 2017.',
         'name_creator':'Muhammad Akmal Abdul Halim',
@@ -28,8 +27,8 @@ def show_main(request):
 
     return render(request, "main.html", context)
 
-def create_rating(request):
-    form = ProductForm(request.POST or None)
+def create_product(request):
+    form = ProductForm(request.POST, request.FILES)
 
     if form.is_valid() and request.method == "POST":
         rating_entry = form.save(commit=False)
@@ -38,7 +37,7 @@ def create_rating(request):
         return redirect('main:show_main')
 
     context = {'form': form}
-    return render(request, "create_rating.html", context)
+    return render(request, "create_product.html", context)
 
 def show_xml(request):
     data = Product.objects.all()
@@ -89,3 +88,30 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
+def edit_product(request, id):
+    # Get rating entry berdasarkan id
+    product = get_object_or_404(Product, pk = id)
+
+    # Set product entry sebagai instance dari form
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+
+        if form.is_valid() and request.method == "POST":
+            # Simpan form dan kembali ke halaman awal
+            form.save()
+            return HttpResponseRedirect(reverse('main:show_main'))
+        
+    else:
+        form = ProductForm(instance=product)
+
+    context = {'form': form}
+    return render(request, "edit_product.html", context)
+
+def delete_product(request, id):
+    # Get product berdasarkan id
+    product = Product.objects.get(pk = id)
+    # Hapus product
+    product.delete()
+    # Kembali ke halaman awal
+    return HttpResponseRedirect(reverse('main:show_main'))
