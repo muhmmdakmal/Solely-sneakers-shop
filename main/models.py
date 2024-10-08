@@ -10,9 +10,13 @@ class Product(models.Model):
     price = models.IntegerField()
     description = models.TextField()
     time = models.DateField(default=datetime.date.today)# Menampilkan waktu
-    rating_barang = models.IntegerField(default=0)
-    image = models.ImageField(upload_to='product_images/', blank=True, null=True)
+    image = models.ImageField(upload_to='media/product_images/', blank=True, null=True)
     
     def __str__(self):
         return self.name
+    
+    def image_url(self):
+        if self.image:
+            return self.image.url
+        return None
     
