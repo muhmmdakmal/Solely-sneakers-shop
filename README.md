@@ -648,3 +648,118 @@
 15. Agar CSS dan tailwind dapat terhubung, kita melakukan routing di base.html dengan menambahkan line berikut didalam tag head <script src="https://cdn.tailwindcss.com"></script> dan <link rel="stylesheet" href="{% static 'css/global.css' %}"/>
 16. Lakukan styling dihalaman yang anda ingin style, jika anda ingin menambahkan animasi kompleks anda bisa menambahkan styling sendiri di global.css
 </details>
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+<details>
+   <summary> Tugas 6: JavaScript dan AJAX </summary>
+
+**1. Jelaskan manfaat dari penggunaan JavaScript dalam pengembangan aplikasi web!**
+
+1. Interaktivitas: JavaScript memungkinkan pengembang untuk menambahkan elemen interaktif pada halaman web, seperti formulir yang dapat dikirim tanpa memuat ulang halaman, animasi, dan efek transisi. Ini meningkatkan pengalaman pengguna secara keseluruhan.
+2. Pemrosesan Klien: JavaScript memungkinkan pemrosesan data di sisi klien (browser), sehingga mengurangi beban server dan meningkatkan kinerja aplikasi. Pengguna dapat melihat perubahan secara real-time tanpa harus berinteraksi dengan server setiap saat.
+3. Manipulasi DOM: Dengan JavaScript, pengembang dapat mengubah struktur dan konten halaman web secara dinamis dengan Document Object Model (DOM). Ini memungkinkan pembaruan konten tanpa perlu memuat ulang seluruh halaman.
+4. Kompatibilitas Multi-Platform: JavaScript didukung oleh semua browser modern, sehingga aplikasi yang dibangun dengan JavaScript dapat diakses di berbagai perangkat dan platform, termasuk desktop, tablet, dan smartphone.
+5. Integrasi dengan API: JavaScript memudahkan integrasi dengan berbagai API (Application Programming Interfaces), memungkinkan pengembang untuk mengakses dan memanfaatkan layanan eksternal, seperti data cuaca, media sosial, dan layanan pembayaran.
+6. Pengembangan Aplikasi Web Single Page (SPA): Dengan framework JavaScript seperti React, Angular, dan Vue.js, pengembang dapat membuat aplikasi web satu halaman (SPA) yang memberikan pengalaman pengguna yang lebih cepat dan responsif.
+7. Framework dan Library: Terdapat banyak framework dan library JavaScript yang tersedia, seperti jQuery, Bootstrap, dan Express.js, yang mempercepat pengembangan aplikasi dengan menyediakan fungsionalitas siap pakai dan memudahkan pengelolaan kode.
+8. Peningkatan SEO: Meskipun JavaScript sempat dianggap kurang ramah SEO, dengan praktik yang tepat seperti prerendering dan penggunaan server-side rendering (SSR), aplikasi web berbasis JavaScript dapat dioptimalkan untuk mesin pencari.
+9. Komunitas dan Sumber Daya: JavaScript memiliki komunitas yang besar dan aktif, sehingga pengembang dapat dengan mudah menemukan tutorial, dokumentasi, dan dukungan dari rekan-rekan mereka.
+
+**2. Jelaskan fungsi dari penggunaan await ketika kita menggunakan fetch()! Apa yang akan terjadi jika kita tidak menggunakan await?**
+
+- Fungsi Await :
+  1. Menunggu Resolusi Promise: Ketika kita menggunakan await sebelum fetch(), itu akan menghentikan eksekusi kode pada baris tersebut hingga Promise yang dikembalikan oleh fetch() diselesaikan. Ini berarti bahwa kita menunggu respons dari server sebelum melanjutkan ke baris kode berikutnya.
+  2. Menyederhanakan Penanganan Asinkron: Dengan menggunakan await, kita dapat menulis kode asinkron yang lebih mudah dibaca dan dikelola. Kode dengan await terlihat lebih seperti kode sinkron, yang membuatnya lebih intuitif.
+
+- Apa yang Terjadi Jika Tidak Menggunakan await?
+
+   Jika kita tidak menggunakan await saat memanggil fetch(), beberapa hal akan terjadi:
+  1. Promise Dihasilkan tetapi Tidak Ditunggu: fetch() akan segera mengembalikan Promise, tetapi kode berikutnya akan terus dieksekusi tanpa menunggu hasil dari Promise tersebut. Ini bisa menyebabkan kita mencoba mengakses data yang belum siap.
+  2. Pengolahan Data yang Tidak Tepat: Jika kita langsung mencoba mengakses respons sebelum Promise selesai, kita mungkin mendapatkan nilai undefined atau kesalahan, karena respons belum diterima.
+  3. Penggunaan .then(): Tanpa await, kita harus menangani Promise menggunakan metode .then(), yang bisa membuat kode lebih rumit dan sulit dibaca. Misalnya:
+
+     ```javascript
+        fetch('url')
+          .then(response => response.json())
+          .then(data => {
+              console.log(data);
+          });
+     ```
+     Dengan menggunakan await, kode akan lebih ringkas dan mudah dipahami:
+
+     ```javascript
+      const response = await fetch('url');
+      const data = await response.json();
+      console.log(data);
+     ```
+
+**3. Mengapa kita perlu menggunakan decorator csrf_exempt pada view yang akan digunakan untuk AJAX POST?**
+
+Menggunakan decorator @csrf_exempt pada view yang akan digunakan untuk AJAX POST di Django adalah langkah yang penting karena alasan-alasan berikut:
+1. CSRF Token dan Keamanan
+   - Cross-Site Request Forgery (CSRF) adalah jenis serangan di mana penyerang mencoba untuk memanipulasi pengguna agar mengirimkan permintaan yang tidak diinginkan ke aplikasi web. Django memiliki sistem perlindungan CSRF untuk melindungi aplikasi dari serangan ini dengan meminta token CSRF yang valid untuk permintaan POST.
+   - Token ini harus disertakan dalam header atau body permintaan untuk validasi. Jika tidak ada token yang valid, Django akan menolak permintaan tersebut.
+
+2. Permintaan AJAX dan CSRF
+   - Ketika menggunakan AJAX untuk melakukan permintaan POST, terutama dari klien seperti JavaScript, menambahkan token CSRF ke dalam header atau body bisa menjadi rumit. Jika token tidak disertakan atau tidak valid, permintaan akan ditolak, dan ini dapat menyebabkan kebingungan bagi pengembang dan pengguna.
+   - Dengan menggunakan @csrf_exempt, kita dapat menonaktifkan pemeriksaan CSRF untuk view tertentu yang menerima permintaan AJAX. Ini sangat berguna untuk endpoint yang memang hanya digunakan oleh aplikasi front-end dan diharapkan hanya akan diakses oleh kode yang kita kontrol.
+
+3. Pengembangan dan Pengujian yang Lebih Mudah
+   - Selama fase pengembangan dan pengujian, mungkin lebih mudah untuk menonaktifkan pemeriksaan CSRF, terutama ketika sering melakukan pengujian dengan permintaan AJAX. Namun, ini harus digunakan dengan hati-hati dan hanya pada endpoint yang aman.
+  
+**4. Pada tutorial PBP minggu ini, pembersihan data input pengguna dilakukan di belakang (backend) juga. Mengapa hal tersebut tidak dilakukan di frontend saja?**
+
+Berikut beberapa alasan, mengapa pembersihan data input pengguna dilakukan di backend:
+1. Keamanan
+   - Serangan Berbasis Input: Pengguna dapat dengan mudah mengelabui validasi di frontend dengan mengubah atau menghapus skrip JavaScript, menggunakan alat pengembang, atau mengirimkan permintaan langsung ke server. Pembersihan data di backend membantu melindungi aplikasi dari serangan seperti SQL injection, Cross-Site Scripting (XSS), dan serangan lainnya yang berpotensi membahayakan.
+2. Integritas Data
+   - Validasi yang Kuat: Backend memiliki kontrol penuh terhadap logika bisnis dan aturan validasi yang lebih kuat. Ini memastikan bahwa data yang disimpan dalam basis data sesuai dengan aturan yang ditetapkan, mencegah data yang tidak valid atau berbahaya.
+3. Keandalan
+   - Dependensi pada Klien: Bergantung sepenuhnya pada pembersihan data di frontend mengasumsikan bahwa pengguna tidak akan menonaktifkan JavaScript atau menggunakan browser yang tidak mendukung fitur tersebut. Backend tidak terpengaruh oleh kondisi klien dan selalu dapat melakukan pembersihan data.
+4. Centralized Logic
+   - Pengelolaan yang Mudah: Dengan menempatkan logika pembersihan data di backend, kita dapat memiliki satu titik pengelolaan untuk semua aturan validasi dan sanitasi. Ini membuat pemeliharaan kode lebih mudah dan lebih konsisten di seluruh aplikasi, terutama jika aplikasi memiliki beberapa klien atau antarmuka pengguna.
+5. Menangani Berbagai Sumber Data
+   - Sumber Data yang Beragam: Data mungkin berasal dari berbagai sumber, seperti API eksternal, basis data, atau input pengguna. Pembersihan di backend memastikan bahwa semua data, terlepas dari sumbernya, diproses dengan cara yang sama untuk menjaga konsistensi.
+6. User Experience
+   - Penyampaian Kesalahan yang Jelas: Pembersihan data di backend memungkinkan kita memberikan umpan balik yang lebih jelas dan relevan kepada pengguna jika terjadi kesalahan. Kita dapat mengembalikan pesan kesalahan spesifik terkait dengan input yang tidak valid, membantu pengguna untuk memperbaiki kesalahan mereka.
+  
+**5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!**
+1. Untuk menambahkan mood baru ke basis data dengan AJAX. Tambahkan kedua impor berikut pada file views.py.
+   ```python
+   from django.views.decorators.csrf import csrf_exempt
+   from django.views.decorators.http import require_POST
+   ```
+
+2. Buat function yang menghandle add product by AJAX didalam views.py, contohnya seperti ini:
+   ```python
+   @csrf_exempt
+   @require_POST
+   def add_mood_entry_ajax(request):
+       mood = request.POST.get("mood")
+       feelings = request.POST.get("feelings")
+       mood_intensity = request.POST.get("mood_intensity")
+       user = request.user
+   
+       new_mood = MoodEntry(
+           mood=mood, feelings=feelings,
+           mood_intensity=mood_intensity,
+           user=user
+       )
+       new_mood.save()
+   
+       return HttpResponse(b"CREATED", status=201)
+   ```
+
+3. Melakukan routing di urls.py untuk functionnya.
+4. Menghapus baris didalam show_main yang mengambil object dari models.py, lalu ganti pada function show_json dan show_xml untuk isi variable data menjadi data = MoodEntry.objects.filter(user=request.user)
+5. Buat block script sebelum endblock content yang berisi javascript anda.
+6. Buatlah function baru pada block <script> tersebut dengan nama getProductEntries. Fungsi ini menggunakan fetch() API ke data JSON secara asynchronous.
+7. Buatlah funtion baru pada block <script> dengan nama refreshProductEntries yang digunakan untuk me-refresh data moods secara asinkronus.
+8. Pada function itu juga, kita tambahkan html template yang menghandle tampilan card product kedalam function refreshProductEntries.
+9. Pada main.html kita tambahkan form yang berguna untuk membuat form AJAX.
+10. Tambahkan tombol agar user bisa mengisi formnya.
+11. Mengimport from django.utils.html import strip_tags yang berfungsi untuk "membersihkan" data baru.
+12. Pada function add product by AJAX ubah isi variable yang mengambil data product dan description dengan menambahkan strip_tags
+13. Tambahkan function didalam forms.py yang berguna untuk membersihkan data yang user input.
+14. TAmbahkan DOMPurify dalam script anda agar ketika user meng-input data "kotor" tidak keluar alert box pada website anda.
+</details>
