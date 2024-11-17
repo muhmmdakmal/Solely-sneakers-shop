@@ -121,7 +121,7 @@
               </p>
             </div>
             <div class="thumb">
-                <img src="${item.fields.image ? item.fields.image : '{% static 'image/sepatu-rating.png' %}'}" alt="${item.fields.name}" class="product-image">
+                <img src="${item.fields.image ? item.fields.image : '{% static "image/sepatu-rating.png" %}'}" alt="${item.fields.name}" class="product-image">
             </div>
             <div class="detial">
               <div class="title">
@@ -168,7 +168,7 @@
           </div>
         </div>
       </div>
-            `;
+      `;
         });
     }
     document.getElementById("product_cards").className = classNameString;
@@ -212,4 +212,5 @@ const modal = document.getElementById('crudModal');
     addProductEntry();
   })
 </script>
+
 {% endblock content %}
